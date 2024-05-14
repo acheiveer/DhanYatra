@@ -5,7 +5,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/",{
 })
 .then(()=>{
     console.log("Databse Connected")
-}).error((e)=>{console.log(e)})
+}).catch((e)=>{console.log(e)})
 
 const userSchema = new mongoose.Schema({
     username:String,

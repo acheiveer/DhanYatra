@@ -1,5 +1,4 @@
 const express = require('express');
-
 const router = express.Router();
 const zod = require("zod");
 const { User, Account } = require("../db");
@@ -13,7 +12,7 @@ const signupSchema = zod.object({
     username: zod.string(),
     password: zod.string(),
     firstName: zod.string(),
-    password: zod.string()
+    lastName: zod.string()
 })
 router.post("/signup", async (req, res) => { 
     const body = req.body;
