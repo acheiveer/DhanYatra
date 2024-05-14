@@ -3,7 +3,7 @@ const router = express.Router();
 const zod = require("zod");
 const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
+const { JWT_SECRET }  = require("../config");
 const bcrypt = require("bcrypt");
 const  { authMiddleware } = require("../middleware");
 // signup and signin routes
@@ -93,6 +93,7 @@ router.post("/signin", async (req,res)=>{
         }, JWT_SECRET);
   
         res.json({
+            message:"Successfully logged In",
             token: token
         })
         return;

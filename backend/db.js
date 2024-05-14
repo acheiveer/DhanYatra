@@ -1,8 +1,13 @@
 const mongoose = require("mongoose")
 
-mongoose.connect("mongodb://127.0.0.1:27017/",{
-    dbName:'DhanYatra'
-})
+// mongoose.connect("mongodb://127.0.0.1:27017/",{
+//     dbName:'DhanYatra'
+// })
+// .then(()=>{
+//     console.log("Databse Connected")
+// }).catch((e)=>{console.log(e)})
+
+mongoose.connect(process.env.DB_CONNECTION_STRING)
 .then(()=>{
     console.log("Databse Connected")
 }).catch((e)=>{console.log(e)})
