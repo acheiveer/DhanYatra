@@ -5,6 +5,7 @@ const zod = require("zod");
 const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const bcrypt = require("bcrypt");
 const  { authMiddleware } = require("../middleware");
 // signup and signin routes
 
@@ -33,7 +34,15 @@ router.post("/signup", async (req, res) => {
         })
     }
 
-    const dbUser = await User.create(body);
+    const hashedpassword = await bcrypt.hash(body.password,10)
+
+    const dbUser = await User.create({
+        username: body.username,
+        password: hashedpassword,
+        firstName: body.firstName,
+        lastName: body.lastName,
+    });
+
     const token = jwt.sign({
         userId: dbUser._id
     }, JWT_SECRET);
@@ -59,13 +68,17 @@ router.post("/signin", async (req,res)=>{
             message: "Email already taken / Incorrect inputs"
         })
     }
-
     const user = await User.findOne({
-        username: req.body.username,
-        password: req.body.password
+        username: req.body.username
     });
 
-    if (user) {
+
+    if (!user) {
+        return res.status(404).send("User not found.");
+    }
+    const passwordMatch = await bcrypt.compare(body.password, user.password);
+
+    if (passwordMatch) {
         const token = jwt.sign({
             userId: user._id
         }, JWT_SECRET);
@@ -96,10 +109,8 @@ router.put("/", authMiddleware, async (req, res) => {
         })
     }
 
-    await User.updateOne(req.body, {
-        id: req.userId
-    })
-
+		await User.updateOne({ _id: req.userId }, req.body);
+	
     res.json({
         message: "Updated successfully"
     })
