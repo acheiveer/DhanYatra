@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BottomWarning } from "../components/BottomWarning"
 import { Button } from "../components/Button"
 import { Heading } from "../components/Heading"
@@ -13,6 +13,14 @@ export const Signup = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+      const user=localStorage.getItem('token');
+      if(user){
+        return navigate('/dashboard');
+      }
+    }, []);
+  
 
     return <div className="bg-slate-300 h-screen flex justify-center">
     <div className="flex flex-col justify-center">
