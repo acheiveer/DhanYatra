@@ -6,19 +6,20 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { checkToken } from "../utils/checkToken"
 
 export const Signin = () => {
   const [username,setUsername] = useState("");
   const [password,setPassword] = useState("")
   const navigate = useNavigate();
   
-  
   useEffect(() => {
-    const user=localStorage.getItem('token');
-    if(user){
-      return navigate('/dashboard');
-    }
-  }, []);
+    checkToken().then(isValid => {
+        if (isValid) {
+            navigate('/dashboard');
+        }
+    });
+}, [navigate]);
 
 
     return <div className="bg-slate-300 h-screen flex justify-center">

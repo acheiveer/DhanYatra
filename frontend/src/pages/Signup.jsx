@@ -6,6 +6,7 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
+import {checkToken} from "../utils/checkToken"
 
 export const Signup = () => {
     const [firstName, setFirstName] = useState("");
@@ -15,11 +16,12 @@ export const Signup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-      const user=localStorage.getItem('token');
-      if(user){
-        return navigate('/dashboard');
-      }
-    }, []);
+      checkToken().then(isValid => {
+          if (isValid) {
+              navigate('/dashboard');
+          }
+      });
+  }, [navigate]);
   
 
     return <div className="bg-slate-300 h-screen flex justify-center">
